@@ -24,14 +24,10 @@ DIFF_CMD="git diff --name-status %s; bash"
 #
 # This is my vim branch diffing tool; change it if you like.
 my_diff () {
-	mtron >/tmp/mtron.log 2>&1 &
-	vim "+call Gbdiff(\"$1\")"
+	vim "+Gtdiff $1"
 }
 my_cleanup () {
-	ALREADY_RUNNING="$(ps u | grep tagphp | grep -v grep)"
-	if [ -z "$ALREADY_RUNNING" ]; then
-		tagphp >/dev/null 2>&1
-	fi
+	make tags >/dev/null 2>&1
 }
 DIFF_CMD="my_diff %s"
 CLEANUP_CMD="my_cleanup &"
