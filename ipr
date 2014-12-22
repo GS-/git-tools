@@ -5,4 +5,4 @@ REMOTE=origin
 REPO="$(git remote -v | grep $REMOTE | head -n 1 | sed 's/^[^:]\+:\([^\/]\+\)\/\([^ \.]*\).*$/\1\/\2/')"
 ON_BRANCH=$(git branch | grep '^* ' | sed 's/^* //')
 
-xdg-open https://github.com/$REPO/compare/$ON_BRANCH > /dev/null 2>&1
+xdg-open "https://github.com/$REPO/compare/$ON_BRANCH" > /dev/null 2>&1

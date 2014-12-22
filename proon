@@ -23,7 +23,7 @@ done
 
 for BRANCH in $(git branch --merged "$MERGE_BRANCH" | grep -v "\<master\>\|^\*\|\<$MERGE_BRANCH\>"); do
 	if [ -n "$INTERACTIVE" ]; then
-		read -p "$(basename $0): remove branch '$BRANCH'? (y)" RESPONSE
+		read -p "$(basename "$0"): remove branch '$BRANCH'? (y)" RESPONSE
 		if [  "$RESPONSE" != 'y' ] && [ "$RESPONSE" != '' ]; then
 			continue
 		fi

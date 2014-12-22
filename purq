@@ -86,15 +86,15 @@ trap on_exit EXIT
 TEMP_BRANCH="PR-$1"
 
 echo -n "Fetching remote revisions..."
-git fetch "$REPO" refs/pull/$1/head:$TEMP_BRANCH >/dev/null 2>&1
+git fetch "$REPO" "refs/pull/$1/head:$TEMP_BRANCH" >/dev/null 2>&1
 echo " Fetched."
 
 if [ $? -ne 0 ]; then
-	echo "git fetch "$REPO" refs/pull/$1/head:$TEMP_BRANCH failed."
+	echo "git fetch \"$REPO\" \"refs/pull/$1/head:$TEMP_BRANCH\" failed."
 	exit 1
 fi
 
-git checkout $TEMP_BRANCH
+git checkout "$TEMP_BRANCH"
 
 if [ $? -ne 0 ]; then
 	echo "git checkout $TEMP_BRANCH failed."
@@ -102,7 +102,7 @@ if [ $? -ne 0 ]; then
 fi
 
 MERGE_BASE="$(git merge-base HEAD $MASTER)"
-PR_MERGES="$(git log --pretty=oneline $MERGE_BASE..HEAD | grep "[a-f0-9]\{40\} Merge pull request #")"
+PR_MERGES="$(git log --pretty=oneline "$MERGE_BASE"..HEAD | grep "[a-f0-9]\{40\} Merge pull request #")"
 if [ -n "$PR_MERGES" ]; then
 	echo "Looks like you need to rebase... this PR's merge base is not in your $MASTER branch."
 	exit 1
