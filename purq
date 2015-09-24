@@ -111,6 +111,8 @@ fi
 
 echo "Launching diff'er..."
 
-eval $(printf "$DIFF_CMD" "$(git merge-base HEAD $MASTER)")
+# DIFF_CMD is intended to contain a printf formatting string
+# shellcheck disable=SC2059
+eval "$(printf "$DIFF_CMD" "$(git merge-base HEAD $MASTER)")"
 
 exit 0
