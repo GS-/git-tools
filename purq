@@ -20,17 +20,21 @@ done
 # If you don't have a tool ready, use this; it will display a list of files
 # that differ and then just drop you into a child shell so you can examine
 # changes manually; when you exit the shell your state will be restored.
-DIFF_CMD="git diff --name-status %s; bash"
+# diff_cmd () {
+# 	git diff --name-status $1
+# 	bash
+# }
+# my_cleanup () {
+# }
 #
-# This is my vim branch diffing tool; change it if you like.
-my_diff () {
+# This is my custom vim workflow
+# You probably need to change it to the above to start...
+diff_cmd () {
 	vim "+Gtdiff $1"
 }
 my_cleanup () {
-	make tags >/dev/null 2>&1
+	make tags >/dev/null 2>&1 &
 }
-DIFF_CMD="my_diff %s"
-CLEANUP_CMD="my_cleanup &"
 
 if [ -z "$1" ]; then
 	echo "Please provide the pull request number as the first argument."
@@ -75,7 +79,7 @@ on_exit () {
 	if [ -n "$TEMP_BRANCH" ]; then
 		git branch -D "$TEMP_BRANCH"
 	fi
-	eval "$CLEANUP_CMD"
+	my_cleanup
 }
 trap on_exit EXIT
 
@@ -111,8 +115,6 @@ fi
 
 echo "Launching diff'er..."
 
-# DIFF_CMD is intended to contain a printf formatting string
-# shellcheck disable=SC2059
-eval "$(printf "$DIFF_CMD" "$(git merge-base HEAD $MASTER)")"
+diff_cmd "$(git merge-base HEAD $MASTER)"
 
 exit 0
